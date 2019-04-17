@@ -1,0 +1,12 @@
+
+  handleSubmit = async (page, usersPerPage, event) => {
+    event.preventDefault();
+
+    const array = {
+      array: this.state.array
+    };
+
+    const response = await api.get(page, usersPerPage);
+    const { ordered } = response.data;
+    this.setState({ ordered: ordered });
+  };

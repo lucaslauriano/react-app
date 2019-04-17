@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const rest = axios.create({ baseURL: 'http://localhost:3000' });
+const rest = axios.create({ baseURL: 'http://localhost:3001' });
 
-export const sort = () => rest.get('/sort');
+export const sort = array => rest.post('/sort', { array: array });
 
 const api = {
   sort

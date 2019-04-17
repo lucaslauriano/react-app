@@ -1,0 +1,68 @@
+import React, { Component } from 'react';
+import Paper from '@material-ui/core/Paper';
+import Fab from '@material-ui/core/Fab';
+import TextField from '@material-ui/core/TextField';
+
+import axios from 'axios';
+
+import './App.css';
+
+export default class App extends React.Component {
+  state = {
+    array: '',
+    orederd: []
+  };
+
+  handleChange = event => {
+    this.setState({ array: event.target.value });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    var ordering = [];
+    const array = this.state.array;
+
+    axios.post(`http://localhost:3001/sort`, { array }).then(res => {
+      ordering = res.data;
+      console.log(res.data);
+    });
+
+    this.setState({ ordered: ordering });
+  };
+
+  render() {
+    const { ordered } = this.state;
+    console.log('2', ordered);
+    return (
+      <div className="App">
+        <div className="App-header">
+          <Paper>
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                <TextField
+                  id="array"
+                  name="array"
+                  margin="normal"
+                  variant="outlined"
+                  onChange={this.handleChange}
+                />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
+            this.props.ordered ?
+            <div>
+              {ordered}
+              {/* {ordered.map(item => (
+                <Fab color="primary" aria-label="Add">
+                  {item}
+                </Fab>
+              ))} */}
+            </div>
+            : <div>ordenar</div>
+          </Paper>
+        </div>
+      </div>
+    );
+  }
+}
