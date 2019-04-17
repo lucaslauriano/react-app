@@ -13,18 +13,36 @@ export default class App extends React.Component {
     ordered: []
   };
 
+  parseInteger = array => {
+    var newArray = [];
+
+    for (let i = 0; i < array.length; i++) {
+      newArray.push(parseInt(array[i]));
+    }
+
+    return newArray;
+  };
+
+  splited = splited => {
+    return splited.split(',');
+  };
+
   handleChange = event => {
     var splited = event.target.value;
-    var array = splited.split(',');
 
-    this.setState({ array: array });
+    var array = this.splited(splited);
+    var newArray = this.parseInteger(array);
+
+    this.setState({ array: newArray });
   };
 
   handleSubmitTwo = async event => {
     event.preventDefault();
+
     const array = this.state.array;
     const response = await api.sort(array);
-    this.setState({ ordered: response.data });
+
+    this.setState({ ordered: response.data.array });
   };
 
   render() {
@@ -45,16 +63,12 @@ export default class App extends React.Component {
               </label>
               <input type="submit" value="Submit" />
             </form>
-            <div>
-              {ordered.map(function(item) {
-                return (
-                  <Fab key={item} color="primary" aria-label="Add">
-                    {item}
-                  </Fab>
-                );
-              })}
-            </div>
           </Paper>
+          {ordered.map(item => (
+            <Fab key={item} color="primary" aria-label="Add">
+              {item}
+            </Fab>
+          ))}
         </div>
       </div>
     );
